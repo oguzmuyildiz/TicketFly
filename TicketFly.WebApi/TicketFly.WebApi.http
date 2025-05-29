@@ -1,0 +1,6 @@
+@TicketFly.WebApi_HostAddress = http://localhost:5022
+
+GET {{TicketFly.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

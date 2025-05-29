@@ -11,8 +11,9 @@ public class Ticket : BaseEntity
     public string? Domain { get; set; }
 
     public TicketStatus Status { get; set; }
-    public Guid AssignedTo { get; set; }
+    public Guid AssignedToId { get; set; }
     public Guid ClientId { get; set; }
     public Client Client { get; set; } = null!;
+    public User AssignedTo { get; set; } = null!;
     public IList<TicketMessage> Items { get; private set; } = [];
 }
