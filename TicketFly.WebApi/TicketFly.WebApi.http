@@ -1,6 +1,15 @@
-@TicketFly.WebApi_HostAddress = http://localhost:5022
+@TicketFly.WebApi_HostAddress = https://localhost:6123
 
-GET {{TicketFly.WebApi_HostAddress}}/weatherforecast/
+GET {{TicketFly.WebApi_HostAddress}}/clients/
 Accept: application/json
 
+###
+
+POST {{TicketFly.WebApi_HostAddress}}/clients/
+Content-Type: application/json
+{
+    "name": "Client1",
+    "email": "Client1@clientdomain.com",
+    "domain": "clientdomain.com"
+}
 ###
