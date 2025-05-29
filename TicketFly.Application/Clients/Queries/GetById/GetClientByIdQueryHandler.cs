@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TicketFly.Application.Common.Interfaces;
+using TicketFly.Application.Common.Intefaces.Data;
 using TicketFly.Domain.Dtos;
 
 namespace TicketFly.Application.Clients.Queries.GetById;

@@ -18,4 +18,11 @@
     <ProjectReference Include="..\TicketFly.Domain\TicketFly.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Users\Queries\GetByEmail\" />
+    <Folder Include="Users\Queries\GetById\" />
+    <Folder Include="Users\Queries\Get\" />
+    <Folder Include="Users\Queries\" />
+  </ItemGroup>
+
 </Project>

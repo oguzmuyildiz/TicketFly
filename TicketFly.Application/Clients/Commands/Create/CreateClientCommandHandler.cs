@@ -1,8 +1,8 @@
-﻿using TicketFly.Application.Common.Interfaces;
+﻿using TicketFly.Application.Common.Intefaces.Data;
 using TicketFly.Domain.Entities;
 
 namespace TicketFly.Application.Clients.Commands.Create;
-public class CreateTicketCommandHandler(IAppDbContext context) : IRequestHandler<CreateClientCommand, Guid>
+public class CreateClientCommandHandler(IAppDbContext context) : IRequestHandler<CreateClientCommand, Guid>
 {
     private readonly IAppDbContext _context = context;
     public async Task<Guid> Handle(CreateClientCommand request, CancellationToken cancellationToken)

@@ -1,12 +1,20 @@
-﻿using TicketFly.Domain.Dtos;
+﻿using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
+using TicketFly.Application.Common.Intefaces.Data;
+using TicketFly.Domain.Dtos;
 
 namespace TicketFly.Application.Clients.Queries.Get;
 
-public class GetClientByIdQueryHandler : IRequestHandler<GetClientGetByIdQuery, IEnumerable<ClientDto>>
+public class GetClientsQueryHandler(IAppDbContext context, IMapper mapper) : IRequestHandler<GetClientsQuery, IEnumerable<ClientDto>>
 {
-    public async Task<IEnumerable<ClientDto>> Handle(GetClientGetByIdQuery request, CancellationToken cancellationToken)
+    private readonly IAppDbContext _context = context;
+    private readonly IMapper _mapper = mapper;
+    public async Task<IEnumerable<ClientDto>> Handle(GetClientsQuery request, CancellationToken cancellationToken)
     {
-        // Here you would typically interact with your database context to retrieve clients.
-        return [];
+        return await _context.Clients
+             .OrderByDescending(t => t.Created)
+             .AsNoTracking()
+             .ProjectTo<ClientDto>(_mapper.ConfigurationProvider)
+             .ToListAsync(cancellationToken);
     }
 }

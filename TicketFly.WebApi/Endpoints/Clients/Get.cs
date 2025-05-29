@@ -13,7 +13,7 @@ public class Get : IEndpoint
 
     public static async Task<IResult> GetClients(ISender sender)
     {
-        IEnumerable<ClientDto> clientDtos = await sender.Send(new GetClientGetByIdQuery());
+        IEnumerable<ClientDto> clientDtos = await sender.Send(new GetClientsQuery());
         return Results.Ok(clientDtos);
     }
 }

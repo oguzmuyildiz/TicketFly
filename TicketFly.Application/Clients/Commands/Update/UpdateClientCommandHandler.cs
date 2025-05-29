@@ -1,7 +1,7 @@
-﻿using TicketFly.Application.Common.Interfaces;
+﻿using TicketFly.Application.Common.Intefaces.Data;
 
 namespace TicketFly.Application.Clients.Commands.Update;
-public class UpdateTicketCommandHandler(IAppDbContext context) : IRequestHandler<UpdateClientCommand, bool>
+public class UpdateClientCommandHandler(IAppDbContext context) : IRequestHandler<UpdateClientCommand, bool>
 {
     public async Task<bool> Handle(UpdateClientCommand request, CancellationToken cancellationToken)
     {
