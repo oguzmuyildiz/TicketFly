@@ -16,9 +16,9 @@ Accept: application/json
 POST {{TicketFly.WebApi_HostAddress}}/clients/
 Content-Type: application/json
 {
-    "name": "Client1",
-    "email": "Client1@clientdomain.com",
-    "domain": "clientdomain.com"
+    "name": "Client2",
+    "email": "Client2@clientdomain.com",
+    "domain": "client2domain.com"
 }
 ###
 
@@ -27,7 +27,7 @@ PUT {{TicketFly.WebApi_HostAddress}}/clients/
 Content-Type: application/json
 {
     "id": "492237de-6204-475a-6891-08dd9ebd50f4",
-    "name": "Client1-Updated",
+    "name": "Client1-Updated-3",
     "email": "Client1@clientdomain.com",
     "domain": "clientdomain.com"
 }
