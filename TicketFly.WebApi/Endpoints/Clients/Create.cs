@@ -1,4 +1,5 @@
-﻿using TicketFly.Application.Clients.Commands.Create;
+﻿using Microsoft.AspNetCore.Authorization;
+using TicketFly.Application.Clients.Commands.Create;
 
 namespace TicketFly.WebApi.Endpoints.Clients;
 
@@ -12,6 +13,7 @@ public class Create : IEndpoint
             .WithTags(EndpointTags.Clients);
     }
 
+    [Authorize]
     public static async Task<IResult> CreateClient(CreateClientRequest createClientRequest, ISender sender, CancellationToken cancellationToken)
     {
         CreateClientCommand command = new(createClientRequest.Name, createClientRequest.Email, createClientRequest.Domain);

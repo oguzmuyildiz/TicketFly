@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using TicketFly.Application.Common.Intefaces.Authentication;
+﻿using TicketFly.Application.Common.Intefaces.Authentication;
 using TicketFly.WebApi.Services;
 
 namespace TicketFly.WebApi;

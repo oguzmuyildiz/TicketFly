@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 
 builder.AddApplicationServices();
-builder.AddInfrastructureServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.AddWebServices();
 
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());

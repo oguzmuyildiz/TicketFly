@@ -1,8 +1,10 @@
 @TicketFly.WebApi_HostAddress = https://localhost:6001
+@JwtKey = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo2MTAwIiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NjEwMCIsImV4cCI6MTc0ODc1NTQ0NSwic3ViIjoiMWExMmVmM2UtYjM4NC00MDg0LWYxZmYtMDhkZDllYmI1YjZhIiwiZW1haWwiOiJ1c2VyMUBvZ3V6eWlsZGl6Lm5ldCIsImlhdCI6MTc0ODUzOTQ0NSwibmJmIjoxNzQ4NTM5NDQ1fQ.gB2pa9mIbEZo9aGJEkwpNh9_kgGzYXekgNt4NZgWoJc
 
 #region
 GET {{TicketFly.WebApi_HostAddress}}/clients/
 Accept: application/json
+Authorization: Bearer {{JwtKey}}
 
 ###
 
@@ -15,6 +17,7 @@ Accept: application/json
 #region
 POST {{TicketFly.WebApi_HostAddress}}/clients/
 Content-Type: application/json
+Authorization: Bearer {{JwtKey}}
 {
     "name": "Client2",
     "email": "Client2@clientdomain.com",
@@ -25,6 +28,7 @@ Content-Type: application/json
 #region
 PUT {{TicketFly.WebApi_HostAddress}}/clients/
 Content-Type: application/json
+Authorization: Bearer {{JwtKey}}
 {
     "id": "492237de-6204-475a-6891-08dd9ebd50f4",
     "name": "Client1-Updated-3",
@@ -50,6 +54,6 @@ POST {{TicketFly.WebApi_HostAddress}}/users/login
 Content-Type: application/json
 {
     "email": "user1@oguzyildiz.net",
-    "password": "user1@2"
+    "password": "user1@"
 }
 ###
