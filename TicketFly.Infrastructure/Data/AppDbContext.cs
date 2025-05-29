@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TicketFly.Application.Common.Interfaces;
 using TicketFly.Domain.Entities;
 
 namespace TicketFly.Infrastructure.Data;

@@ -1,9 +1,22 @@
-﻿namespace TicketFly.Application.Clients.Commands.Create;
-public class CreateTicketCommandHandler : IRequestHandler<CreateClientCommand, Guid>
+﻿using TicketFly.Application.Common.Interfaces;
+using TicketFly.Domain.Entities;
+
+namespace TicketFly.Application.Clients.Commands.Create;
+public class CreateTicketCommandHandler(IAppDbContext context) : IRequestHandler<CreateClientCommand, Guid>
 {
+    private readonly IAppDbContext _context = context;
     public async Task<Guid> Handle(CreateClientCommand request, CancellationToken cancellationToken)
     {
-        // Here you would typically interact with your database context to create a new client.
-        return Guid.NewGuid();
+        var entity = new Client
+        {
+            Name = request.Name,
+            Email = request.Email,
+            Domain = request.Domain
+        };
+
+        _context.Clients.Add(entity);
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return entity.Id;
     }
 }

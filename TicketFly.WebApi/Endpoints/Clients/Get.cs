@@ -1,4 +1,5 @@
 ﻿using TicketFly.Application.Clients.Queries.Get;
+using TicketFly.Domain.Dtos;
 
 namespace TicketFly.WebApi.Endpoints.Clients;
 
@@ -12,7 +13,7 @@ public class Get : IEndpoint
 
     public static async Task<IResult> GetClients(ISender sender)
     {
-        var vm = await sender.Send(new GetClientsQuery());
-        return Results.Ok(vm);
+        IEnumerable<ClientDto> clientDtos = await sender.Send(new GetClientGetByIdQuery());
+        return Results.Ok(clientDtos);
     }
 }

@@ -15,7 +15,7 @@ public class Create : IEndpoint
     public static async Task<IResult> CreateClient(CreateClientRequest createClientRequest, ISender sender, CancellationToken cancellationToken)
     {
         CreateClientCommand command = new(createClientRequest.Name, createClientRequest.Email, createClientRequest.Domain);
-        var result = await sender.Send(command, cancellationToken);
-        return Results.Ok(result);
+        Guid createdId = await sender.Send(command, cancellationToken);
+        return Results.Ok(createdId);
     }
 }

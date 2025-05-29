@@ -3,6 +3,7 @@ using TicketFly.Infrastructure.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using TicketFly.Application.Common.Interfaces;
 
 namespace TicketFly.Infrastructure;
 public static class DependencyInjections

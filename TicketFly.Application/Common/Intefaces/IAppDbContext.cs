@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TicketFly.Domain.Entities;
 
-namespace TicketFly.Infrastructure.Data;
+namespace TicketFly.Application.Common.Interfaces;
 
 public interface IAppDbContext
 {
@@ -9,4 +9,5 @@ public interface IAppDbContext
 
     DbSet<Ticket> Tickets { get; }
     DbSet<TicketMessage> TicketMessages { get; }
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
