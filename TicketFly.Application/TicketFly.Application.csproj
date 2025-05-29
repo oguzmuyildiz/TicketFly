@@ -17,4 +17,8 @@
     <ProjectReference Include="..\TicketFly.Domain\TicketFly.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Common\Intefaces\" />
+  </ItemGroup>
+
 </Project>

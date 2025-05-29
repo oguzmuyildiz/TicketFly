@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketFly.Domain", "TicketF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketFly.Application", "TicketFly.Application\TicketFly.Application.csproj", "{90AA1FE0-D851-4CD0-A504-12E92641650C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketFly.Infrastructure", "TicketFly.Infrastructure\TicketFly.Infrastructure.csproj", "{F70A6BFC-C86E-4453-95C7-F456E42E1A5C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{90AA1FE0-D851-4CD0-A504-12E92641650C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90AA1FE0-D851-4CD0-A504-12E92641650C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90AA1FE0-D851-4CD0-A504-12E92641650C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F70A6BFC-C86E-4453-95C7-F456E42E1A5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F70A6BFC-C86E-4453-95C7-F456E42E1A5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F70A6BFC-C86E-4453-95C7-F456E42E1A5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F70A6BFC-C86E-4453-95C7-F456E42E1A5C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
