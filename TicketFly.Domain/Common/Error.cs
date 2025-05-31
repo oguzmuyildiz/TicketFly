@@ -21,6 +21,9 @@ public record Error
 
     public ErrorType Type { get; }
 
+    public static Error Unauthorized(string code, string description) =>
+        new(code, description, ErrorType.Unauthorized);
+    
     public static Error Failure(string code, string description) =>
         new(code, description, ErrorType.Failure);
 

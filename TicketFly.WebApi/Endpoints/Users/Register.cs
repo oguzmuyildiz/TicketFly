@@ -1,5 +1,6 @@
-﻿using TicketFly.Application.Users.Commands.Login;
-using TicketFly.Application.Users.Commands.Register;
+﻿using TicketFly.Application.Users.Commands.Register;
+using TicketFly.WebApi.Extensions;
+using TicketFly.WebApi.Infrastructure;
 
 namespace TicketFly.WebApi.Endpoints.Users;
 
@@ -16,7 +17,8 @@ public class Register : IEndpoint
     public static async Task<IResult> RegisterUser(RegisterUserRequest request, ISender sender, CancellationToken cancellationToken)
     {
         RegisterUserCommand command = new(request.Email, request.UserName, request.FirstName, request.LastName, request.Password);
-        string id = await sender.Send(command, cancellationToken);
-        return Results.Ok(id);
+        Result<string> result = await sender.Send(command, cancellationToken);
+
+        return result.Match(Results.Ok, CustomResults.Problem);
     }
 }

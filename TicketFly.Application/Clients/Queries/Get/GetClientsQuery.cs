@@ -1,4 +1,5 @@
-﻿using TicketFly.Domain.Dtos;
+﻿using TicketFly.Domain.Common;
+using TicketFly.Domain.Dtos;
 
 namespace TicketFly.Application.Clients.Queries.Get;
-public record GetClientsQuery : IRequest<IEnumerable<ClientDto>>;
+public record GetClientsQuery : IRequest<Result<IEnumerable<ClientDto>>>;

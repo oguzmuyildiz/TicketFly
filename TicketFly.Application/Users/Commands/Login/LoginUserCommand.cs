@@ -1,3 +1,5 @@
-﻿namespace TicketFly.Application.Users.Commands.Login;
+﻿using TicketFly.Domain.Common;
 
-public record LoginUserCommand (string Email, string Password) : IRequest<string>;
+namespace TicketFly.Application.Users.Commands.Login;
+
+public record LoginUserCommand (string Email, string Password) : IRequest<Result<string>>;

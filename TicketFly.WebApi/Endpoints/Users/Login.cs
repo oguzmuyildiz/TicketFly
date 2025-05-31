@@ -1,6 +1,6 @@
-﻿using TicketFly.Application.Clients.Commands.Create;
-using TicketFly.Application.Users.Commands.Login;
-using TicketFly.WebApi.Endpoints.Clients;
+﻿using TicketFly.Application.Users.Commands.Login;
+using TicketFly.WebApi.Extensions;
+using TicketFly.WebApi.Infrastructure;
 
 namespace TicketFly.WebApi.Endpoints.Users;
 
@@ -17,7 +17,8 @@ public class Login : IEndpoint
     public static async Task<IResult> LoginUser(LoginUserRequest request, ISender sender, CancellationToken cancellationToken)
     {
         LoginUserCommand command = new(request.Email, request.Password);
-        string token = await sender.Send(command, cancellationToken);
-        return Results.Ok(token);
+        Result<string> result = await sender.Send(command, cancellationToken);
+
+        return result.Match(Results.Ok, CustomResults.Problem);
     }
 }

@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using TicketFly.Application.Clients.Queries.Get;
+using TicketFly.Domain.Common;
 using TicketFly.Domain.Dtos;
+using TicketFly.WebApi.Extensions;
+using TicketFly.WebApi.Infrastructure;
 
 namespace TicketFly.WebApi.Endpoints.Clients;
 
@@ -15,7 +18,8 @@ public class Get : IEndpoint
     [Authorize]
     public static async Task<IResult> GetClients(ISender sender)
     {
-        IEnumerable<ClientDto> clientDtos = await sender.Send(new GetClientsQuery());
-        return Results.Ok(clientDtos);
+        Result<IEnumerable<ClientDto>> result = await sender.Send(new GetClientsQuery());
+        
+        return result.Match(Results.Ok, CustomResults.Problem);
     }
 }

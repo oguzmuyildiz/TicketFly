@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using TicketFly.Application.Clients.Commands.Update;
-using TicketFly.Domain.Common;
+﻿using TicketFly.Application.Clients.Commands.Update;
 using TicketFly.WebApi.Extensions;
 using TicketFly.WebApi.Infrastructure;
 
