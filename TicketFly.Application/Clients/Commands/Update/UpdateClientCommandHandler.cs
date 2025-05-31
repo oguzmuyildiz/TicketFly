@@ -1,8 +1,4 @@
 ﻿using TicketFly.Application.Common.Intefaces.Data;
-using TicketFly.Domain.Common;
-using TicketFly.Domain.Dtos;
-using TicketFly.Domain.Entities;
-using TicketFly.Domain.Exceptions;
 
 namespace TicketFly.Application.Clients.Commands.Update;
 public class UpdateClientCommandHandler(IAppDbContext context) : IRequestHandler<UpdateClientCommand, Result<bool>>

@@ -1,9 +1,5 @@
 ﻿using AutoMapper.QueryableExtensions;
-using Microsoft.EntityFrameworkCore;
 using TicketFly.Application.Common.Intefaces.Data;
-using TicketFly.Domain.Common;
-using TicketFly.Domain.Dtos;
-using TicketFly.Domain.Exceptions;
 
 namespace TicketFly.Application.Clients.Queries.Get;
 

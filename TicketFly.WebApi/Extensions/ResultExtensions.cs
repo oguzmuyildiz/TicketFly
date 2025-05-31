@@ -1,6 +1,4 @@
-﻿using TicketFly.Domain.Common;
-
-namespace TicketFly.WebApi.Extensions;
+﻿namespace TicketFly.WebApi.Extensions;
 
 public static class ResultExtensions
 {

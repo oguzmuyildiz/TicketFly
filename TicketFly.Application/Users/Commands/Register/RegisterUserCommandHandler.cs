@@ -1,6 +1,5 @@
 ﻿using TicketFly.Application.Common.Intefaces.Authentication;
 using TicketFly.Application.Common.Intefaces.Data;
-using TicketFly.Domain.Common;
 using TicketFly.Domain.Entities;
 
 namespace TicketFly.Application.Users.Commands.Register;

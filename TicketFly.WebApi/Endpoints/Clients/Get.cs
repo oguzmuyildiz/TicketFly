@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using TicketFly.Application.Clients.Queries.Get;
-using TicketFly.Domain.Common;
+﻿using TicketFly.Application.Clients.Queries.Get;
 using TicketFly.Domain.Dtos;
 using TicketFly.WebApi.Extensions;
 using TicketFly.WebApi.Infrastructure;

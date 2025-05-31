@@ -1,7 +1,4 @@
-﻿
-
-namespace TicketFly.Application.Clients.Commands.Update;
-
+﻿namespace TicketFly.Application.Clients.Commands.Update;
 public class UpdateClientCommandValidator : AbstractValidator<UpdateClientCommand>
 {
     public UpdateClientCommandValidator()

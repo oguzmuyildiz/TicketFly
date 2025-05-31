@@ -1,6 +1,4 @@
-﻿
-
-namespace TicketFly.Application.Clients.Commands.Create;
+﻿namespace TicketFly.Application.Clients.Commands.Create;
 
 public class CreateClientCommandValidator : AbstractValidator<CreateClientCommand>
 {

@@ -1,9 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using TicketFly.Application.Common.Intefaces.Data;
-using TicketFly.Domain.Common;
-using TicketFly.Domain.Dtos;
-using TicketFly.Domain.Exceptions;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+﻿using TicketFly.Application.Common.Intefaces.Data;
 
 namespace TicketFly.Application.Clients.Queries.GetById;
 
