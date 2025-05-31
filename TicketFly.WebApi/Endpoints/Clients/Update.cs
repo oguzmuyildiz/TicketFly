@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using TicketFly.Application.Clients.Commands.Update;
+using TicketFly.Domain.Common;
+using TicketFly.WebApi.Extensions;
+using TicketFly.WebApi.Infrastructure;
 
 namespace TicketFly.WebApi.Endpoints.Clients;
 
@@ -17,7 +20,8 @@ public class Update : IEndpoint
     public static async Task<IResult> UpdateClient(UpdateClientRequest request, ISender sender, CancellationToken cancellationToken)
     {
         UpdateClientCommand command = new(request.Id, request.Name, request.Email, request.Domain);
-        bool result = await sender.Send(command, cancellationToken);
-        return Results.Ok(result);
+        Result<bool> result = await sender.Send(command, cancellationToken);
+
+        return result.Match(Results.Ok, CustomResults.Problem);
     }
 }

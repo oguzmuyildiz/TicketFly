@@ -7,14 +7,12 @@ using TicketFly.Application.Common.Intefaces.Authentication;
 using TicketFly.Infrastructure.Authentication;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using TicketFly.Infrastructure.Data.Interceptors;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 namespace TicketFly.Infrastructure;
-public static class DependencyInjections
+public static class DependencyInjection
 {
     public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {

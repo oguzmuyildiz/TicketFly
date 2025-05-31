@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using TicketFly.Application.Clients.Queries.GetById;
+using TicketFly.Domain.Common;
 using TicketFly.Domain.Dtos;
+using TicketFly.WebApi.Extensions;
+using TicketFly.WebApi.Infrastructure;
 
 namespace TicketFly.WebApi.Endpoints.Clients;
 
@@ -15,8 +18,9 @@ public class GetById : IEndpoint
     [Authorize]
     public static async Task<IResult> GetClient(Guid id, ISender sender, CancellationToken cancellationToken)
     {
-        ClientDto result = await sender.Send(new GetClientByIdQuery(id), cancellationToken);
-        return Results.Ok(result);
+        Result<ClientDto> result = await sender.Send(new GetClientByIdQuery(id), cancellationToken);
+        
+        return result.Match(Results.Ok, CustomResults.Problem);
     }
 }
 
