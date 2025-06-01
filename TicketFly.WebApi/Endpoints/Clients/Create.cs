@@ -1,4 +1,5 @@
 ﻿using TicketFly.Application.Clients.Commands.Create;
+using TicketFly.Domain.Constants;
 using TicketFly.WebApi.Extensions;
 using TicketFly.WebApi.Infrastructure;
 
@@ -11,10 +12,10 @@ public class Create : IEndpoint
     public void MapEndpoint(IEndpointRouteBuilder endpointRouteBuilder)
     {
         endpointRouteBuilder.MapPost("clients", CreateClient)
-            .WithTags(EndpointTags.Clients);
+            .WithTags(EndpointTags.Clients)
+            .RequireAuthorization([Policies.AdminPolicy]);
     }
 
-    [Authorize]
     public static async Task<IResult> CreateClient(CreateClientRequest createClientRequest, ISender sender, CancellationToken cancellationToken)
     {
         CreateClientCommand command = new(createClientRequest.Name, createClientRequest.Email, createClientRequest.Domain);

@@ -1,6 +1,4 @@
 ﻿using TicketFly.Application.Users.Commands.Login;
-using TicketFly.WebApi.Extensions;
-using TicketFly.WebApi.Infrastructure;
 
 namespace TicketFly.WebApi.Endpoints.Users;
 
@@ -19,6 +17,6 @@ public class Login : IEndpoint
         LoginUserCommand command = new(request.Email, request.Password);
         Result<string> result = await sender.Send(command, cancellationToken);
 
-        return result.Match(Results.Ok, CustomResults.Problem);
+        return result.Match(Results.Ok<string>, CustomResults.Problem);
     }
 }

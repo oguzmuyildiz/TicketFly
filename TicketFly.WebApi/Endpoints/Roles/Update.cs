@@ -1,6 +1,5 @@
 ﻿using TicketFly.Application.Roles.Commands.Update;
-using TicketFly.WebApi.Extensions;
-using TicketFly.WebApi.Infrastructure;
+using TicketFly.Domain.Constants;
 
 namespace TicketFly.WebApi.Endpoints.Roles;
 
@@ -11,10 +10,10 @@ public class Update : IEndpoint
     public void MapEndpoint(IEndpointRouteBuilder endpointRouteBuilder)
     {
         endpointRouteBuilder.MapPut("roles", UpdateRole)
-            .WithTags(EndpointTags.Roles);
+            .WithTags(EndpointTags.Roles)
+            .RequireAuthorization([Policies.AdminPolicy]);
     }
 
-    [Authorize]
     public static async Task<IResult> UpdateRole(UpdateRoleRequest request, ISender sender, CancellationToken cancellationToken)
     {
         UpdateRoleCommand command = new(request.Id, request.Name);

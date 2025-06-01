@@ -1,6 +1,5 @@
 ﻿using TicketFly.Application.UserRoles.Commands.Create;
-using TicketFly.WebApi.Extensions;
-using TicketFly.WebApi.Infrastructure;
+using TicketFly.Domain.Constants;
 
 namespace TicketFly.WebApi.Endpoints.UserRoles;
 
@@ -11,10 +10,10 @@ public class Create : IEndpoint
     public void MapEndpoint(IEndpointRouteBuilder endpointRouteBuilder)
     {
         endpointRouteBuilder.MapPost("userroles", CreateUserRole)
-            .WithTags(EndpointTags.UserRoles);
+            .WithTags(EndpointTags.UserRoles)
+            .RequireAuthorization([Policies.AdminPolicy]);
     }
 
-    [Authorize]
     public static async Task<IResult> CreateUserRole(CreateUserRoleRequest request, ISender sender, CancellationToken cancellationToken)
     {
         CreateUserRoleCommand command = new CreateUserRoleCommand(request.UserId, request.RoleId);

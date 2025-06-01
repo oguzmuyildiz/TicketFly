@@ -10,6 +10,6 @@ internal sealed class LoginUserCommandValidator : AbstractValidator<LoginUserCom
 
         RuleFor(c => c.Password)
             .NotEmpty()
-            .MinimumLength(8);
+            .MinimumLength(6);
     }
 }

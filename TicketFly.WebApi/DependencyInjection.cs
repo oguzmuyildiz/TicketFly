@@ -33,6 +33,9 @@ public static class DependencyInjection
 
     public static void UseWebServices(this WebApplication app)
     {
+        app.UseAuthentication();
+        app.UseAuthorization();
+
         app.UseExceptionHandler();
         app.MapEndpoints();
     }

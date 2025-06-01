@@ -13,7 +13,8 @@ public class LoginUserCommandHandler(
     public async Task<Result<string>> Handle(LoginUserCommand command, CancellationToken cancellationToken)
     {
         User user = await context.Users
-            .AsNoTracking()
+            .Include(x=>x.UserRoles)
+            .ThenInclude(x => x.Role)
             .SingleAsync(u => u.Email == command.Email, cancellationToken);
 
         bool verified = passwordHasher.Verify(command.Password, user.PasswordHash);

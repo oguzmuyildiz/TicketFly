@@ -1,6 +1,5 @@
 ﻿using TicketFly.Application.UserRoles.Queries.GetRoleNamesByUserId;
-using TicketFly.WebApi.Extensions;
-using TicketFly.WebApi.Infrastructure;
+using TicketFly.Domain.Constants;
 
 namespace TicketFly.WebApi.Endpoints.UserRoles;
 
@@ -9,10 +8,10 @@ public class GetNamesByUserId : IEndpoint
     public void MapEndpoint(IEndpointRouteBuilder endpoints)
     {
         endpoints.MapGet("userrolenames/{UserId:guid}", GetRoleNames)
-            .WithTags(EndpointTags.UserRoles);
+            .WithTags(EndpointTags.UserRoles)
+            .RequireAuthorization([Policies.AdminPolicy]);
     }
 
-    [Authorize]
     public static async Task<IResult> GetRoleNames(Guid UserId, ISender sender, CancellationToken cancellationToken)
     {
         Result<IEnumerable<string>> result = await sender.Send(new GetRoleNamesByUserIdQuery(UserId), cancellationToken);

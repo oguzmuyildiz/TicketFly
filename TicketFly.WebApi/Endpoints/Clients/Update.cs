@@ -1,6 +1,5 @@
 ﻿using TicketFly.Application.Clients.Commands.Update;
-using TicketFly.WebApi.Extensions;
-using TicketFly.WebApi.Infrastructure;
+using TicketFly.Domain.Constants;
 
 namespace TicketFly.WebApi.Endpoints.Clients;
 
@@ -11,10 +10,10 @@ public class Update : IEndpoint
     public void MapEndpoint(IEndpointRouteBuilder endpointRouteBuilder)
     {
         endpointRouteBuilder.MapPut("clients", UpdateClient)
-            .WithTags(EndpointTags.Clients);
+            .WithTags(EndpointTags.Clients)
+            .RequireAuthorization([Policies.AdminPolicy]);
     }
 
-    [Authorize]
     public static async Task<IResult> UpdateClient(UpdateClientRequest request, ISender sender, CancellationToken cancellationToken)
     {
         UpdateClientCommand command = new(request.Id, request.Name, request.Email, request.Domain);

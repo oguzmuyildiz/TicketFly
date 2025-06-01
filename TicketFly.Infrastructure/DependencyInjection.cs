@@ -1,31 +1,35 @@
-﻿using TicketFly.Infrastructure.Data;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using TicketFly.Application.Common.Intefaces.Data;
-using TicketFly.Application.Common.Intefaces.Authentication;
-using TicketFly.Infrastructure.Authentication;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using TicketFly.Infrastructure.Data.Interceptors;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
+using TicketFly.Application.Common.Intefaces.Data;
+using TicketFly.Application.Common.Intefaces.Authentication;
+using TicketFly.Domain.Constants;
+using TicketFly.Infrastructure.Data;
+using TicketFly.Infrastructure.Authentication;
+using TicketFly.Infrastructure.Data.Interceptors;
+using Microsoft.Extensions.Hosting;
+
 namespace TicketFly.Infrastructure;
 public static class DependencyInjection
 {
-    public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
+    public static IHostApplicationBuilder AddInfrastructureServices(this IHostApplicationBuilder builder)
     {
-        services.AddDatabaseServices(configuration).
-        AddAuthenticationServices(configuration).
+        builder.Services.AddDatabaseServices(builder.Configuration).
+        AddAuthenticationServices(builder.Configuration).
         AddAuthorizationServices();
 
-        services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
-        services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
+        builder.Services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
+        builder.Services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
 
-        services.AddSingleton(TimeProvider.System);
-        services.AddSingleton<IPasswordHasher, PasswordHasher>();
-        services.AddSingleton<ITokenProvider, TokenProvider>();
+        builder.Services.AddSingleton(TimeProvider.System);
+        builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
+        builder.Services.AddSingleton<ITokenProvider, TokenProvider>();
+        return builder;
     }
 
     private static IServiceCollection AddDatabaseServices(this IServiceCollection services, IConfiguration configuration)
@@ -64,7 +68,10 @@ public static class DependencyInjection
     }
     private static IServiceCollection AddAuthorizationServices(this IServiceCollection services)
     {
-        services.AddAuthorization();
+        services.AddAuthorizationBuilder()
+            .AddPolicy(Policies.CanDelete, policy => policy.RequireRole(Roles.Administrator))
+            .AddPolicy(Policies.AdminPolicy, policy => policy.RequireRole(Roles.Administrator))
+            .AddPolicy(Policies.UserPolicy, policy => policy.RequireRole(Roles.User));
         return services;
     }
 }

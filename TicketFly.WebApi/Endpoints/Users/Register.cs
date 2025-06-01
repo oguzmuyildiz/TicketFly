@@ -1,6 +1,4 @@
 ﻿using TicketFly.Application.Users.Commands.Register;
-using TicketFly.WebApi.Extensions;
-using TicketFly.WebApi.Infrastructure;
 
 namespace TicketFly.WebApi.Endpoints.Users;
 

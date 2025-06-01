@@ -1,5 +1,4 @@
 ﻿namespace TicketFly.WebApi.Extensions;
-
 public static class ResultExtensions
 {
     public static TOut Match<TOut>(

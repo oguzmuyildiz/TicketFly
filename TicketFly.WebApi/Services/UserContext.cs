@@ -8,5 +8,5 @@ public class UserContext(IHttpContextAccessor httpContextAccessor) : IUserContex
 {
     private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
     
-    public string? Id => _httpContextAccessor.HttpContext?.User?.FindFirstValue(JwtRegisteredClaimNames.Sub);
+    public string? Id => _httpContextAccessor.HttpContext?.User?.FindFirstValue(JwtRegisteredClaimNames.NameId);
 }
