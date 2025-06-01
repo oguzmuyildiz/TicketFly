@@ -25,7 +25,6 @@ public class UpdateClientCommandValidator : AbstractValidator<UpdateClientComman
     }
     public async Task<bool> CheckUniqueEmail(string email, CancellationToken cancellationToken)
     {
-        // Ensure the email is unique among clients, except for the one being updated.
         return !await _context.Clients
             .AnyAsync(l => l.Email == email, cancellationToken);
     }
