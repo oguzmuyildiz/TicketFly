@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
@@ -31,7 +30,7 @@ internal sealed class TokenProvider(IConfiguration configuration) : ITokenProvid
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Role, roles),
             ]),
-            Expires = DateTime.UtcNow.AddMinutes(configuration.GetValue<int>("Jwt:ExpireMinutes")),
+            Expires = DateTime.UtcNow.AddMinutes(configuration.GetValue<int>("Jwt:AccessTokenExpirationMinutes")),
             SigningCredentials = credentials,
             Issuer = configuration["Jwt:Issuer"],
             Audience = configuration["Jwt:Audience"]
@@ -47,8 +46,8 @@ internal sealed class TokenProvider(IConfiguration configuration) : ITokenProvid
             Token = RefreshToken,
             UserId = user.Id,
             Created = DateTime.UtcNow,
-            Expires = DateTime.UtcNow.AddMinutes(1),
-            CreatedByIp = "1.1.1.1",
+            Expires = DateTime.UtcNow.AddDays(configuration.GetValue<int>("Jwt:RefreshTokenExpirationDays")),
+            CreatedByIp = IpAddress,
             IsActive = true
         };
 
@@ -66,6 +65,6 @@ internal sealed class TokenProvider(IConfiguration configuration) : ITokenProvid
 
         return token.Replace("+", string.Empty)
             .Replace("/", string.Empty)
-            .Replace("=", string.Empty); // Remove URL unsafe characters
+            .Replace("=", string.Empty);
     }
 }
