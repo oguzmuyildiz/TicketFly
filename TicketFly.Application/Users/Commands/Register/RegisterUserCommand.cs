@@ -1,3 +1,5 @@
-﻿namespace TicketFly.Application.Users.Commands.Register;
+﻿using TicketFly.Domain.Models;
 
-public record RegisterUserCommand(string Email, string UserName, string FirstName, string LastName, string Password) : IRequest<Result<string>>;
+namespace TicketFly.Application.Users.Commands.Register;
+
+public record RegisterUserCommand(string Email, string UserName, string FirstName, string LastName, string Password) : IRequest<Result<TokenModel>>;

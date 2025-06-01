@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using TicketFly.Application.Common.Intefaces.Data;
+﻿using TicketFly.Application.Common.Intefaces.Data;
 
 namespace TicketFly.Application.Roles.Commands.Create;
 

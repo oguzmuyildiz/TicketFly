@@ -2,16 +2,20 @@
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 using TicketFly.Application.Common.Intefaces.Authentication;
 using TicketFly.Domain.Entities;
+using TicketFly.Domain.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace TicketFly.Infrastructure.Authentication;
 
-internal sealed class TokenProvider(IConfiguration configuration) : ITokenProvider
+internal sealed class TokenProvider(IConfiguration configuration, IUserContext userContext) : ITokenProvider
 {
-    public string Create(User user)
+    private readonly IUserContext _userContext = userContext;
+    public TokenModel Create(User user)
     {
         string secretKey = configuration["Jwt:Secret"]!;
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
@@ -35,8 +39,30 @@ internal sealed class TokenProvider(IConfiguration configuration) : ITokenProvid
 
         var handler = new JsonWebTokenHandler();
 
-        string token = handler.CreateToken(tokenDescriptor);
+        string AccessToken = handler.CreateToken(tokenDescriptor);
+        string RefreshToken = GenerateRefreshToken();
 
-        return token;
+        var refreshToken = new RefreshToken
+        {
+            Token = RefreshToken,
+            UserId = user.Id,
+            Created = DateTime.UtcNow,
+            Expires = DateTime.UtcNow.AddDays(30),
+            CreatedByIp = _userContext.IpAddress,
+            IsActive = true
+        
+        };
+
+        user.RefreshTokens.Add(refreshToken);
+
+        return new TokenModel(AccessToken, RefreshToken);
+    }
+
+    public string GenerateRefreshToken()
+    {
+        var randomNumber = new byte[32];
+        using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(randomNumber);
+        return Convert.ToBase64String(randomNumber);
     }
 }

@@ -20,6 +20,8 @@ public record Error
 
     public ErrorType Type { get; }
 
+    public static Error ForbiddenAccess(string code, string description) =>
+        new(code, description, ErrorType.ForbiddenAccess);
     public static Error Unauthorized(string code, string description) =>
         new(code, description, ErrorType.Unauthorized);
     

@@ -9,4 +9,5 @@ public class UserContext(IHttpContextAccessor httpContextAccessor) : IUserContex
     private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
     
     public string? Id => _httpContextAccessor.HttpContext?.User?.FindFirstValue(JwtRegisteredClaimNames.NameId);
+    public string? IpAddress => _httpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString();
 }

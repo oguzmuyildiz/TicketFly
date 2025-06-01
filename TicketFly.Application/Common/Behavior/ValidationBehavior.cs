@@ -1,8 +1,5 @@
-﻿
-using FluentValidation.Results;
+﻿using FluentValidation.Results;
 using System.Reflection;
-using TicketFly.Domain.Common;
-using TicketFly.Domain.Exceptions;
 
 namespace TicketFly.Application.Common.Behavior;
 
@@ -17,25 +14,7 @@ public class ValidationBehavior<TRequest, TResponse>
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         if (!_validators.Any())
-            return await next();
-
-        //var context = new ValidationContext<TRequest>(request);
-        //var failures = _validators
-        //    .Select(v => v.Validate(context))
-        //    .SelectMany(result => result.Errors)
-        //    .Where(f => f is not null)
-        //    .GroupBy(
-        //        f => f.PropertyName.Substring(f.PropertyName.IndexOf(".") + 1),
-        //        x => x.ErrorMessage, (propertyName, errorMessages) => new
-        //        {
-        //            Key = propertyName,
-        //            Values = errorMessages.Distinct().ToArray()
-        //        })
-        //    .ToDictionary(x => x.Key, x => x.Values);
-
-        //if (failures.Any())
-        //    throw new ValidationAppException(failures);
-
+            return await next(cancellationToken);
 
         ValidationFailure[] validationFailures = await ValidateAsync(request);
 
@@ -65,7 +44,7 @@ public class ValidationBehavior<TRequest, TResponse>
             return (TResponse)(object)Result.Failure(CreateValidationError(validationFailures));
         }
 
-        return await next();
+        return await next(cancellationToken);
     }
     private async Task<ValidationFailure[]> ValidateAsync(TRequest request)
     {

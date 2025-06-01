@@ -1,19 +1,20 @@
 ﻿using TicketFly.Application.Common.Intefaces.Authentication;
 using TicketFly.Application.Common.Intefaces.Data;
 using TicketFly.Domain.Entities;
+using TicketFly.Domain.Models;
 
 namespace TicketFly.Application.Users.Commands.Register;
 
 public class RegisterUserCommandHandler(
     IAppDbContext context,
     IPasswordHasher passwordHasher,
-    ITokenProvider tokenProvider) : IRequestHandler<RegisterUserCommand, Result<string>>
+    ITokenProvider tokenProvider) : IRequestHandler<RegisterUserCommand, Result<TokenModel>>
 {
     private readonly IAppDbContext _context = context;
     private readonly IPasswordHasher _passwordHasher = passwordHasher;
     private readonly ITokenProvider _tokenProvider = tokenProvider;
 
-    public async Task<Result<string>> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
+    public async Task<Result<TokenModel>> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
     {
         var entity = new User
         {
@@ -26,8 +27,10 @@ public class RegisterUserCommandHandler(
         _context.Users.Add(entity);
 
         await _context.SaveChangesAsync(cancellationToken);
-        
-        string token = _tokenProvider.Create(entity);
+
+        TokenModel token = _tokenProvider.Create(entity);
+
+        await context.SaveChangesAsync(cancellationToken);
 
         return token;
     }

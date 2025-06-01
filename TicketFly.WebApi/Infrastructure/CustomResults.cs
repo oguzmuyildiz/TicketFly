@@ -19,6 +19,8 @@ public static class CustomResults
         static string GetTitle(Error error) =>
             error.Type switch
             {
+                ErrorType.Unauthorized => error.Code,
+                ErrorType.ForbiddenAccess => error.Code,
                 ErrorType.Validation => error.Code,
                 ErrorType.Problem => error.Code,
                 ErrorType.NotFound => error.Code,
@@ -29,6 +31,8 @@ public static class CustomResults
         static string GetDetail(Error error) =>
             error.Type switch
             {
+                ErrorType.Unauthorized => error.Description,
+                ErrorType.ForbiddenAccess => error.Description,
                 ErrorType.Validation => error.Description,
                 ErrorType.Problem => error.Description,
                 ErrorType.NotFound => error.Description,
@@ -39,6 +43,8 @@ public static class CustomResults
         static string GetType(ErrorType errorType) =>
             errorType switch
             {
+                ErrorType.Unauthorized => "https://datatracker.ietf.org/doc/html/rfc7235#section-3.1",
+                ErrorType.ForbiddenAccess => "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.3",
                 ErrorType.Validation => "https://tools.ietf.org/html/rfc7231#section-6.5.1",
                 ErrorType.Problem => "https://tools.ietf.org/html/rfc7231#section-6.5.1",
                 ErrorType.NotFound => "https://tools.ietf.org/html/rfc7231#section-6.5.4",
@@ -49,6 +55,8 @@ public static class CustomResults
         static int GetStatusCode(ErrorType errorType) =>
             errorType switch
             {
+                ErrorType.Unauthorized => StatusCodes.Status401Unauthorized,
+                ErrorType.ForbiddenAccess => StatusCodes.Status403Forbidden,
                 ErrorType.Validation => StatusCodes.Status400BadRequest,
                 ErrorType.NotFound => StatusCodes.Status404NotFound,
                 ErrorType.Conflict => StatusCodes.Status409Conflict,

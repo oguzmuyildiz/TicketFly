@@ -3,4 +3,5 @@
 public interface IUserContext
 {
     string? Id { get; }
+    string? IpAddress { get; }
 }

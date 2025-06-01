@@ -8,4 +8,5 @@ public class User : BaseEntity
     public string? LastName { get; set; }
     public IList<Ticket> Tickets { get; private set; } = [];
     public IList<UserRole> UserRoles { get; private set; } = [];
+    public IList<RefreshToken> RefreshTokens { get; private set; } = [];
 }

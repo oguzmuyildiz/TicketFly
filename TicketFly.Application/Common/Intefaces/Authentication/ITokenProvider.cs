@@ -1,9 +1,10 @@
 ﻿
 using TicketFly.Domain.Entities;
+using TicketFly.Domain.Models;
 
 namespace TicketFly.Application.Common.Intefaces.Authentication;
 
 public interface ITokenProvider
 {
-    string Create(User user);
+    TokenModel Create(User user);
 }

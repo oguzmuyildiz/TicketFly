@@ -1,16 +1,17 @@
 ﻿using TicketFly.Application.Common.Intefaces.Authentication;
 using TicketFly.Application.Common.Intefaces.Data;
 using TicketFly.Domain.Entities;
+using TicketFly.Domain.Models;
 
 namespace TicketFly.Application.Users.Commands.Login;
 
 public class LoginUserCommandHandler(
     IAppDbContext context,
     IPasswordHasher passwordHasher,
-    ITokenProvider tokenProvider) : IRequestHandler<LoginUserCommand, Result<string>>
+    ITokenProvider tokenProvider) : IRequestHandler<LoginUserCommand, Result<TokenModel>>
 {
 
-    public async Task<Result<string>> Handle(LoginUserCommand command, CancellationToken cancellationToken)
+    public async Task<Result<TokenModel>> Handle(LoginUserCommand command, CancellationToken cancellationToken)
     {
         User user = await context.Users
             .Include(x=>x.UserRoles)
@@ -21,10 +22,11 @@ public class LoginUserCommandHandler(
 
         if (!verified)
         {
-            return Result.Failure<string>(Error.Unauthorized("Invalid email or password", "The provided email or password is incorrect."));
+            return Result.Failure<TokenModel>(Error.Unauthorized("Invalid email or password", "The provided email or password is incorrect."));
         }
-
-        string token = tokenProvider.Create(user);
+        
+        TokenModel token = tokenProvider.Create(user);
+        await context.SaveChangesAsync(cancellationToken);
 
         return token;
     }

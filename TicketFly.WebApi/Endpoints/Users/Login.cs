@@ -1,4 +1,5 @@
 ﻿using TicketFly.Application.Users.Commands.Login;
+using TicketFly.Domain.Models;
 
 namespace TicketFly.WebApi.Endpoints.Users;
 
@@ -15,8 +16,8 @@ public class Login : IEndpoint
     public static async Task<IResult> LoginUser(LoginUserRequest request, ISender sender, CancellationToken cancellationToken)
     {
         LoginUserCommand command = new(request.Email, request.Password);
-        Result<string> result = await sender.Send(command, cancellationToken);
+        Result<TokenModel> result = await sender.Send(command, cancellationToken);
 
-        return result.Match(Results.Ok<string>, CustomResults.Problem);
+        return result.Match(Results.Ok, CustomResults.Problem);
     }
 }
