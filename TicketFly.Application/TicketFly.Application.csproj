@@ -20,7 +20,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Tickets\" />
+    <Folder Include="Tickets\Commands\Create\" />
+    <Folder Include="Tickets\Commands\Update\" />
+    <Folder Include="Tickets\Queries\Get\" />
+    <Folder Include="Tickets\Queries\GetById\" />
+    <Folder Include="Tickets\Queries\GetByClientId\" />
+    <Folder Include="Tickets\Queries\GetByUserId\" />
   </ItemGroup>
 
 </Project>
