@@ -1,8 +1,12 @@
-﻿namespace TicketFly.Application.Clients.Commands.Update;
+﻿using TicketFly.Application.Common.Intefaces.Data;
+
+namespace TicketFly.Application.Clients.Commands.Update;
 public class UpdateClientCommandValidator : AbstractValidator<UpdateClientCommand>
 {
-    public UpdateClientCommandValidator()
+    private readonly IAppDbContext _context;
+    public UpdateClientCommandValidator(IAppDbContext context)
     {
+        _context = context;
         RuleFor(v => v.Id)
             .NotEmpty();
 
@@ -18,5 +22,11 @@ public class UpdateClientCommandValidator : AbstractValidator<UpdateClientComman
         RuleFor(v => v.Domain)
             .NotEmpty()
             .MaximumLength(200);
+    }
+    public async Task<bool> CheckUniqueEmail(string email, CancellationToken cancellationToken)
+    {
+        // Ensure the email is unique among clients, except for the one being updated.
+        return !await _context.Clients
+            .AnyAsync(l => l.Email == email, cancellationToken);
     }
 }
