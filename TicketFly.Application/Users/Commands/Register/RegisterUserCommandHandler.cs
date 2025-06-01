@@ -8,8 +8,10 @@ namespace TicketFly.Application.Users.Commands.Register;
 public class RegisterUserCommandHandler(
     IAppDbContext context,
     IPasswordHasher passwordHasher,
-    ITokenProvider tokenProvider) : IRequestHandler<RegisterUserCommand, Result<TokenModel>>
+    ITokenProvider tokenProvider,
+    IUserContext userContext) : IRequestHandler<RegisterUserCommand, Result<TokenModel>>
 {
+    private readonly IUserContext _userContext = userContext;
     private readonly IAppDbContext _context = context;
     private readonly IPasswordHasher _passwordHasher = passwordHasher;
     private readonly ITokenProvider _tokenProvider = tokenProvider;
@@ -28,7 +30,7 @@ public class RegisterUserCommandHandler(
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        TokenModel token = _tokenProvider.Create(entity);
+        TokenModel token = _tokenProvider.Create(entity, _userContext.IpAddress);
 
         await context.SaveChangesAsync(cancellationToken);
 

@@ -6,27 +6,28 @@ namespace TicketFly.Application.Users.Commands.Refresh;
 
 public class RefreshTokenCommandHandler(
     IAppDbContext context,
-    ITokenProvider tokenProvider) : IRequestHandler<RefreshTokenCommand, Result<TokenModel>>
+    ITokenProvider tokenProvider, 
+    IUserContext userContext) : IRequestHandler<RefreshTokenCommand, Result<TokenModel>>
 {
 
     public async Task<Result<TokenModel>> Handle(RefreshTokenCommand command, CancellationToken cancellationToken)
     {
-        var user = context.Users.SingleOrDefault(u => u.RefreshTokens.Any(t => t.Token == command.RefreshToken));
+        var user = context.Users.Include(x=>x.RefreshTokens).SingleOrDefault(u => u.RefreshTokens.Any(t => t.Token == command.RefreshToken));
         
         if (user == null)
         {
             return Result.Failure<TokenModel>(Error.Unauthorized("Invalid RefreshToken", "The provided RefreshToken is incorrect."));
         }
 
-        var refreshToken = user.RefreshTokens.Single(x => x.Token == command.RefreshToken);
+        var refreshToken = user.RefreshTokens.SingleOrDefault(x => x.Token == command.RefreshToken);
 
         if (refreshToken==null || !refreshToken.IsActive || refreshToken.IsExpired)
         {
             return Result.Failure<TokenModel>(Error.Unauthorized("Invalid RefreshToken", "The provided RefreshToken is incorrect."));
         }
-
+        
         refreshToken.IsActive = false;
-        TokenModel token = tokenProvider.Create(user);
+        TokenModel token = tokenProvider.Create(user, userContext.IpAddress);
         await context.SaveChangesAsync(cancellationToken);
 
         return token;

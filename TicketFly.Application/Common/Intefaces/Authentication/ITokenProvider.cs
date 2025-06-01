@@ -6,5 +6,5 @@ namespace TicketFly.Application.Common.Intefaces.Authentication;
 
 public interface ITokenProvider
 {
-    TokenModel Create(User user);
+    TokenModel Create(User user, string IpAddress);
 }

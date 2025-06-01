@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.HttpOverrides;
 using TicketFly.Application.Common.Intefaces.Authentication;
-using TicketFly.WebApi.Extensions;
 using TicketFly.WebApi.Services;
 
 namespace TicketFly.WebApi;
@@ -35,6 +35,12 @@ public static class DependencyInjection
     {
         app.UseAuthentication();
         app.UseAuthorization();
+        
+        app.UseForwardedHeaders(new ForwardedHeadersOptions
+        {
+            ForwardedHeaders = ForwardedHeaders.XForwardedFor |
+                ForwardedHeaders.XForwardedProto
+        });
 
         app.UseExceptionHandler();
         app.MapEndpoints();

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
@@ -8,14 +9,13 @@ using System.Text;
 using TicketFly.Application.Common.Intefaces.Authentication;
 using TicketFly.Domain.Entities;
 using TicketFly.Domain.Models;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace TicketFly.Infrastructure.Authentication;
 
-internal sealed class TokenProvider(IConfiguration configuration, IUserContext userContext) : ITokenProvider
+internal sealed class TokenProvider(IConfiguration configuration) : ITokenProvider
 {
-    private readonly IUserContext _userContext = userContext;
-    public TokenModel Create(User user)
+    
+    public TokenModel Create(User user, string IpAddress)
     {
         string secretKey = configuration["Jwt:Secret"]!;
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
@@ -47,10 +47,9 @@ internal sealed class TokenProvider(IConfiguration configuration, IUserContext u
             Token = RefreshToken,
             UserId = user.Id,
             Created = DateTime.UtcNow,
-            Expires = DateTime.UtcNow.AddDays(30),
-            CreatedByIp = _userContext.IpAddress,
+            Expires = DateTime.UtcNow.AddMinutes(1),
+            CreatedByIp = "1.1.1.1",
             IsActive = true
-        
         };
 
         user.RefreshTokens.Add(refreshToken);
@@ -60,9 +59,13 @@ internal sealed class TokenProvider(IConfiguration configuration, IUserContext u
 
     public string GenerateRefreshToken()
     {
-        var randomNumber = new byte[32];
+        var randomNumber = new byte[64];
         using var rng = RandomNumberGenerator.Create();
         rng.GetBytes(randomNumber);
-        return Convert.ToBase64String(randomNumber);
+        string token = Convert.ToBase64String(randomNumber);
+
+        return token.Replace("+", string.Empty)
+            .Replace("/", string.Empty)
+            .Replace("=", string.Empty); // Remove URL unsafe characters
     }
 }

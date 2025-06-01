@@ -8,7 +8,8 @@ namespace TicketFly.Application.Users.Commands.Login;
 public class LoginUserCommandHandler(
     IAppDbContext context,
     IPasswordHasher passwordHasher,
-    ITokenProvider tokenProvider) : IRequestHandler<LoginUserCommand, Result<TokenModel>>
+    ITokenProvider tokenProvider,
+    IUserContext userContext) : IRequestHandler<LoginUserCommand, Result<TokenModel>>
 {
 
     public async Task<Result<TokenModel>> Handle(LoginUserCommand command, CancellationToken cancellationToken)
@@ -25,7 +26,7 @@ public class LoginUserCommandHandler(
             return Result.Failure<TokenModel>(Error.Unauthorized("Invalid email or password", "The provided email or password is incorrect."));
         }
         
-        TokenModel token = tokenProvider.Create(user);
+        TokenModel token = tokenProvider.Create(user, userContext.IpAddress);
         await context.SaveChangesAsync(cancellationToken);
 
         return token;
