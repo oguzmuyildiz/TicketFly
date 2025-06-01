@@ -1,8 +1,4 @@
-﻿using TicketFly.Domain.Common;
-using TicketFly.Domain.Enums;
-
-namespace TicketFly.Domain.Entities;
-
+﻿namespace TicketFly.Domain.Entities;
 public class TicketMessage : BaseAuditableEntity
 {
     public Guid TicketId { get; set; }

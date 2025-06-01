@@ -1,5 +1,4 @@
 ﻿namespace TicketFly.Domain.Common;
-
 public enum ErrorType
 {
     Failure = 0,

@@ -1,5 +1,4 @@
 ﻿namespace TicketFly.Domain.Common;
-
 public sealed record ValidationError : Error
 {
     public ValidationError(Error[] errors)

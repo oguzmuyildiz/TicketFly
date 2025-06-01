@@ -20,9 +20,9 @@ POST {{TicketFly.WebApi_HostAddress}}/clients/
 Content-Type: application/json
 Authorization: Bearer {{JwtKey}}
 {
-    "name": "Client2",
-    "email": "Client2@clientdomain.com",
-    "domain": "client2domain.com"
+    "name": "Client3",
+    "email": "Client3@clientdomain.com",
+    "domain": "client3domain.com"
 }
 ###
 

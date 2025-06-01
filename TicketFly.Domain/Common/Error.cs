@@ -1,5 +1,4 @@
 ﻿namespace TicketFly.Domain.Common;
-
 public record Error
 {
     public static readonly Error None = new(string.Empty, string.Empty, ErrorType.Failure);

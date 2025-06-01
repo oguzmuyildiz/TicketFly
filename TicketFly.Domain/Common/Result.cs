@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
 namespace TicketFly.Domain.Common;
-
 public class Result
 {
     public Result(bool isSuccess, Error error)

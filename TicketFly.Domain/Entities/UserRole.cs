@@ -1,7 +1,4 @@
-﻿using TicketFly.Domain.Common;
-
-namespace TicketFly.Domain.Entities;
-
+﻿namespace TicketFly.Domain.Entities;
 public class UserRole : BaseEntity
 {
     public Guid UserId { get; set; }

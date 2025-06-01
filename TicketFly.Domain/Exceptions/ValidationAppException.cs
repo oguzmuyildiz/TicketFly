@@ -1,9 +1,6 @@
 ﻿namespace TicketFly.Domain.Exceptions;
 
-public class ValidationAppException : Exception
+public class ValidationAppException(IReadOnlyDictionary<string, string[]> errors) : Exception("Validation failed")
 {
-    public IReadOnlyDictionary<string, string[]> Errors { get; }
-    public ValidationAppException(IReadOnlyDictionary<string, string[]> errors)
-        : base("Validation failed") => Errors = errors;
-    
+    public IReadOnlyDictionary<string, string[]> Errors { get; } = errors;
 }

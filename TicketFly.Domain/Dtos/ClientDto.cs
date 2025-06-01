@@ -1,5 +1,4 @@
 ﻿namespace TicketFly.Domain.Dtos;
-
 public class ClientDto
 {
     public Guid Id { get; set; }

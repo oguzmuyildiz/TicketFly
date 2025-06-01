@@ -1,7 +1,4 @@
-﻿using TicketFly.Domain.Common;
-
-namespace TicketFly.Domain.Entities;
-
+﻿namespace TicketFly.Domain.Entities;
 public class User : BaseEntity
 {
     public string UserName { get; set; } = string.Empty;

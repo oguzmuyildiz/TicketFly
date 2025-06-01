@@ -1,5 +1,6 @@
 ﻿using TicketFly.Application.Common.Intefaces.Data;
 using TicketFly.Domain.Entities;
+using TicketFly.Domain.Events;
 
 namespace TicketFly.Application.Clients.Commands.Create;
 public class CreateClientCommandHandler(IAppDbContext context) : IRequestHandler<CreateClientCommand, Result<Guid>>
@@ -13,6 +14,8 @@ public class CreateClientCommandHandler(IAppDbContext context) : IRequestHandler
             Email = request.Email,
             Domain = request.Domain
         };
+
+        entity.AddDomainEvent(new ClientCreatedEvent(entity));
 
         _context.Clients.Add(entity);
         await _context.SaveChangesAsync(cancellationToken);

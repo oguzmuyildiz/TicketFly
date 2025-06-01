@@ -16,8 +16,12 @@ public static class DependencyInjection
 {
     public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        AddDatabaseServices(services, configuration);
-        AddAuthenticationServices(services, configuration);
+        services.AddDatabaseServices(configuration).
+        AddAuthenticationServices(configuration).
+        AddAuthorizationServices();
+
+        services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
+        services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
 
         services.AddSingleton(TimeProvider.System);
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
@@ -32,7 +36,7 @@ public static class DependencyInjection
             options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
         });
         services.AddScoped<IAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
-        services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
+        
         return services;
     }
     private static IServiceCollection AddAuthenticationServices(this IServiceCollection services, IConfiguration configuration)
@@ -56,8 +60,11 @@ public static class DependencyInjection
             };
         });
 
+        return services;
+    }
+    private static IServiceCollection AddAuthorizationServices(this IServiceCollection services)
+    {
         services.AddAuthorization();
-
         return services;
     }
 }
