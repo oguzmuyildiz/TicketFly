@@ -25,7 +25,13 @@ public class RefreshTokenCommandHandler(
         {
             return Result.Failure<TokenModel>(Error.Unauthorized("Invalid RefreshToken", "The provided RefreshToken is incorrect."));
         }
-        
+
+        var ActiveTokens = user.RefreshTokens.Where(x => x.IsActive);
+        foreach (var RefreshTokenItem in ActiveTokens)
+        {
+            RefreshTokenItem.IsActive = false;
+        }
+
         refreshToken.IsActive = false;
         TokenModel token = tokenProvider.Create(user, userContext.IpAddress);
         await context.SaveChangesAsync(cancellationToken);

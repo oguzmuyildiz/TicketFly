@@ -13,7 +13,6 @@ namespace TicketFly.Infrastructure.Authentication;
 
 internal sealed class TokenProvider(IConfiguration configuration) : ITokenProvider
 {
-    
     public TokenModel Create(User user, string IpAddress)
     {
         string secretKey = configuration["Jwt:Secret"]!;

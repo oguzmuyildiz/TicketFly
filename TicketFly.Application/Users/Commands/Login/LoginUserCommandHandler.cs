@@ -25,7 +25,13 @@ public class LoginUserCommandHandler(
         {
             return Result.Failure<TokenModel>(Error.Unauthorized("Invalid email or password", "The provided email or password is incorrect."));
         }
-        
+
+        var ActiveTokens = context.RefreshTokens.Where(x => x.UserId==user.Id && x.IsActive);
+        foreach (var RefreshTokenItem in ActiveTokens)
+        {
+            RefreshTokenItem.IsActive = false;
+        }
+
         TokenModel token = tokenProvider.Create(user, userContext.IpAddress);
         await context.SaveChangesAsync(cancellationToken);
 
