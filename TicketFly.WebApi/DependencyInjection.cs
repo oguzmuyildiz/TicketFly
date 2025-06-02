@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpOverrides;
 using System.Reflection;
-using OpenTelemetry.Logs;
-using OpenTelemetry.Exporter;
-using OpenTelemetry.Resources;
 
 using TicketFly.Application.Common.Intefaces.Authentication;
 using TicketFly.WebApi.Services;
+using Serilog;
+using Serilog.Sinks.OpenTelemetry;
 
 namespace TicketFly.WebApi;
 
@@ -35,32 +34,35 @@ public static class DependencyInjection
         //builder.Services.AddExceptionHandler<ProblemExceptionHandler>();
     }
 
-    public static void AddOpenTelemetryServices(this IHostApplicationBuilder builder)
+    public static void AddSerilogServices(this IHostApplicationBuilder builder)
     {
-        var OtlpExporterHeader = builder.Configuration["OtlpExporter:Headers"];
-        var OtlpExporterIngestUrl = builder.Configuration["OtlpExporter:IngestUrl"];
+        var configuration = new ConfigurationBuilder()
+       .SetBasePath(Directory.GetCurrentDirectory())
+       .AddJsonFile("appsettings.json")
+       .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", true)
+       .Build();
 
-        builder.Logging.ClearProviders();
-        builder.Services.AddLogging(logging => logging.AddOpenTelemetry(openTelemetryLoggerOptions =>
-        {
-            openTelemetryLoggerOptions.SetResourceBuilder(
-                ResourceBuilder.CreateEmpty()
-                    .AddService("TicketFly.WebApi")
-                    .AddAttributes(new Dictionary<string, object>
-                    {
-                        ["Environment"] = builder.Environment.EnvironmentName
-                    }));
-
-            openTelemetryLoggerOptions.IncludeScopes = true;
-            openTelemetryLoggerOptions.IncludeFormattedMessage = true;
-
-            openTelemetryLoggerOptions.AddOtlpExporter(exporter =>
+        Log.Logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(configuration)
+            .Enrich.FromLogContext()
+            .WriteTo.Console()
+            .WriteTo.OpenTelemetry(x =>
             {
-                exporter.Endpoint = new Uri(OtlpExporterIngestUrl);
-                exporter.Protocol = OtlpExportProtocol.HttpProtobuf;
-                exporter.Headers = OtlpExporterHeader;
-            });
-        }));
+                x.Endpoint = builder.Configuration["OtlpExporter:IngestUrl"];
+                x.Protocol = OtlpProtocol.HttpProtobuf;
+                x.Headers = new Dictionary<string, string>
+                {
+                    { "X-Seq-ApiKey", builder.Configuration["OtlpExporter:ApiKey"] }
+                };
+                x.ResourceAttributes = new Dictionary<string, object>
+                {
+                    ["service.name"] = "TicketFly.WebApi",
+                    ["service.version"] = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "unknown",
+                    ["environment"] = builder.Environment.EnvironmentName
+                };  
+            })
+            .CreateLogger();
+        builder.Services.AddSerilog();
     }
 
     public static void UseWebServices(this WebApplication app)

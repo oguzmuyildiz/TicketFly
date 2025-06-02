@@ -4,7 +4,8 @@ using TicketFly.WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddOpenTelemetryServices();
+
+builder.AddSerilogServices();
 
 builder.Services.AddOpenApi();
 
