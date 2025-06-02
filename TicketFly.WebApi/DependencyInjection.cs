@@ -1,6 +1,10 @@
-﻿using System.Reflection;
-using Microsoft.AspNetCore.Http.Features;
+﻿using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpOverrides;
+using System.Reflection;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Exporter;
+using OpenTelemetry.Resources;
+
 using TicketFly.Application.Common.Intefaces.Authentication;
 using TicketFly.WebApi.Services;
 
@@ -29,6 +33,34 @@ public static class DependencyInjection
             };
         });
         //builder.Services.AddExceptionHandler<ProblemExceptionHandler>();
+    }
+
+    public static void AddOpenTelemetryServices(this IHostApplicationBuilder builder)
+    {
+        var OtlpExporterHeader = builder.Configuration["OtlpExporter:Headers"];
+        var OtlpExporterIngestUrl = builder.Configuration["OtlpExporter:IngestUrl"];
+
+        builder.Logging.ClearProviders();
+        builder.Services.AddLogging(logging => logging.AddOpenTelemetry(openTelemetryLoggerOptions =>
+        {
+            openTelemetryLoggerOptions.SetResourceBuilder(
+                ResourceBuilder.CreateEmpty()
+                    .AddService("TicketFly.WebApi")
+                    .AddAttributes(new Dictionary<string, object>
+                    {
+                        ["Environment"] = builder.Environment.EnvironmentName
+                    }));
+
+            openTelemetryLoggerOptions.IncludeScopes = true;
+            openTelemetryLoggerOptions.IncludeFormattedMessage = true;
+
+            openTelemetryLoggerOptions.AddOtlpExporter(exporter =>
+            {
+                exporter.Endpoint = new Uri(OtlpExporterIngestUrl);
+                exporter.Protocol = OtlpExportProtocol.HttpProtobuf;
+                exporter.Headers = OtlpExporterHeader;
+            });
+        }));
     }
 
     public static void UseWebServices(this WebApplication app)

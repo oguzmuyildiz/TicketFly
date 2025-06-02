@@ -9,7 +9,7 @@ public class ClientCreatedEventHandler(ILogger<ClientCreatedEventHandler> logger
 
     public Task Handle(ClientCreatedEvent notification, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Domain Event: {DomainEvent} {ClientEmail}", notification.GetType().Name, notification.Item.Email);
+        _logger.LogInformation("Domain Event Triggered: {DomainEvent} {ClientEmail}", notification.GetType().Name, notification.Item.Email);
         return Task.CompletedTask;
     }
 }

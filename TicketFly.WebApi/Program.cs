@@ -3,6 +3,9 @@ using TicketFly.Infrastructure;
 using TicketFly.WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddOpenTelemetryServices();
+
 builder.Services.AddOpenApi();
 
 builder.AddApplicationServices();

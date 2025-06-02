@@ -1,7 +1,5 @@
 ﻿using TicketFly.Application.Clients.Commands.Create;
 using TicketFly.Domain.Constants;
-using TicketFly.WebApi.Extensions;
-using TicketFly.WebApi.Infrastructure;
 
 namespace TicketFly.WebApi.Endpoints.Clients;
 
