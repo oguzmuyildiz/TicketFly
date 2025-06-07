@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+    rabbitmq4:
+        container_name: "rabbitmq4"
+        image: rabbitmq:4.1-management-alpine
+        environment:
+            RABBITMQ_DEFAULT_USER: "net9user"
+            RABBITMQ_DEFAULT_PASS: "FmJ.z%WmQr6r"
+        ports:
+            - "15672:15672"  # Management UI
+            - "5672:5672"    # AMQP protocol
+        

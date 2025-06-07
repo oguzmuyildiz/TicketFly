@@ -1,0 +1,2 @@
+﻿namespace TicketFly.Application.AppNotifications.Commands.Update;
+public record UpdateAppNotificationCommand(Guid Id, Guid? UserId, Guid? OrganizationId, Guid? RoleId, string Title, string Content, string? Link) : IRequest<Result<bool>>;

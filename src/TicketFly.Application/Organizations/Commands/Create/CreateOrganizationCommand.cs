@@ -1,0 +1,2 @@
+﻿namespace TicketFly.Application.Organizations.Commands.Create;
+public record CreateOrganizationCommand(string Name, string Description, string Logo, string Website, string ContactEmail, string ContactPhone) : IRequest<Result<Guid>>;

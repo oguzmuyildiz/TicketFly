@@ -1,0 +1,2 @@
+﻿namespace TicketFly.Application.AppNotifications.Commands.Create;
+public record CreateAppNotificationCommand(Guid? UserId, Guid? OrganizationId, Guid? RoleId, string Title, string Content, string? Link) : IRequest<Result<Guid>>;
