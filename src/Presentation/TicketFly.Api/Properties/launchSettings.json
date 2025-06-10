@@ -1,0 +1,29 @@
+{
+  "profiles": {
+    "TicketFly.Api.Dev": {
+        "commandName": "Project",
+        "environmentVariables": {
+            "ASPNETCORE_ENVIRONMENT": "Development"
+        },
+        "dotnetRunMessages": true,
+        "applicationUrl": "http://localhost:3700"
+    },
+    "TicketFly.Api.Prod": {
+        "commandName": "Project",
+        "environmentVariables": {
+            "ASPNETCORE_ENVIRONMENT": "Production"
+        },
+        "dotnetRunMessages": true,
+        "applicationUrl": "http://localhost:3700"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+        "environmentVariables": {
+            "ASPNETCORE_HTTP_PORTS": "3700"
+        },
+      "publishAllPorts": false
+    }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json"
+}

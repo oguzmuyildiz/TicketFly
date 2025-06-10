@@ -1,12 +1,75 @@
-version: "3.8"
 services:
-    rabbitmq4:
-        container_name: "rabbitmq4"
-        image: rabbitmq:4.1-management-alpine
+    api:
+        image: ${DOCKER_REGISTRY-}api
+        build:
+            context: .
+            dockerfile: src/Presentation/TicketFly.Api/Dockerfile
+        ports:
+          - 3702:3700
+        depends_on:
+            apimssqldb:
+                condition: service_healthy
+            rabbitmq:
+                condition: service_healthy
+            
+    notification:
+        image: ${DOCKER_REGISTRY-}notification
+        build:
+            context: .
+            dockerfile: src/Services/TicketFly.Notifications/Dockerfile
+        ports:
+          - 3502:3500
+        depends_on:
+            rabbitmq:
+                condition: service_healthy
+
+    emailparser:
+        image: ${DOCKER_REGISTRY-}emailparser
+        build:
+            context: .
+            dockerfile: src/Services/TicketFly.EmailParser/Dockerfile
+        ports:
+          - 3402:3400
+        depends_on:
+            rabbitmq:
+                condition: service_healthy
+
+    rabbitmq:
+        image: masstransit/rabbitmq:latest
+        ports:
+            - "15672:15672"
+            - "5672:5672"
         environment:
             RABBITMQ_DEFAULT_USER: "net9user"
             RABBITMQ_DEFAULT_PASS: "FmJ.z%WmQr6r"
+        healthcheck:
+            test: "exit 0"
+            
+    apimssqldb:
+        container_name: "apimssqldb"
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        environment:
+            ACCEPT_EULA: "Y"
+            SA_PASSWORD: "YourStrong@Passw0rd"
         ports:
-            - "15672:15672"  # Management UI
-            - "5672:5672"    # AMQP protocol
+            - "1433:1433"  # SQL Server port
+        volumes:
+            - apimssqldb_data:/var/opt/mssql
+        healthcheck:
+            test: "exit 0"
+
+    # rabbitmq4:
+    #     container_name: "rabbitmq4"
+    #     image: rabbitmq:4.1-management-alpine
+    #     environment:
+    #         RABBITMQ_DEFAULT_USER: "net9user"
+    #         RABBITMQ_DEFAULT_PASS: "FmJ.z%WmQr6r"
+    #     ports:
+    #         - "15672:15672"  # Management UI
+    #         - "5672:5672"    # AMQP protocol
+
+volumes:
+    apimssqldb_data:
+        external: true
         
+
